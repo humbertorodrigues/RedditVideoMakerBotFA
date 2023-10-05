@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import math
 import sys
+import mysql.connector
 from os import name
 from pathlib import Path
 from subprocess import Popen
@@ -24,6 +25,7 @@ from video_creation.final_video import make_final_video
 from video_creation.screenshot_downloader import get_screenshots_of_reddit_posts
 from video_creation.voices import save_text_to_mp3
 from utils.ffmpeg_install import ffmpeg_install
+from mysql.connector import connect, Error
 
 __VERSION__ = "3.2.1"
 
@@ -43,22 +45,53 @@ print_markdown(
 )
 checkversion(__VERSION__)
 
-
 def main(POST_ID=None) -> None:
     global redditid, reddit_object
     reddit_object = get_subreddit_threads(POST_ID)
     redditid = id(reddit_object)
     length, number_of_comments = save_text_to_mp3(reddit_object)
     length = math.ceil(length)
-    get_screenshots_of_reddit_posts(reddit_object, number_of_comments)
-    bg_config = {
-        "video": get_background_config("video"),
-        "audio": get_background_config("audio"),
-    }
-    download_background_video(bg_config["video"])
-    download_background_audio(bg_config["audio"])
-    chop_background(bg_config, length, reddit_object)
-    make_final_video(number_of_comments, length, reddit_object, bg_config)
+
+    try:
+        with connect(
+            host="programaleads.com",
+            user="negocioi_wp",
+            password="(rf)K4T7VAy6",
+            database="negocioi_wp"
+        ) as connection:
+            print(connection)   
+
+            sql = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            objfila = cursor.fetchone()
+
+            print(objfila)
+
+            sql = "UPDATE wp_file SET executado = 1 WHERE id = "+objfila[0]
+            cursor.execute(sql)
+            connection.commit()
+
+            get_screenshots_of_reddit_posts(reddit_object, number_of_comments)
+            bg_config = {
+                "video": objfila[2],
+                "audio": objfila[3],
+            }
+            # bg_config = {
+            #    "video": get_background_config("video"),
+            #    "audio": get_background_config("audio"),
+            #}
+            download_background_video(bg_config["video"])
+            download_background_audio(bg_config["audio"])
+            chop_background(bg_config, length, reddit_object)
+            make_final_video(number_of_comments, length, reddit_object, bg_config)
+
+            sql = "UPDATE wp_file SET executado = 2 WHERE id = "+objfila[0]
+            cursor.execute(sql)
+            connection.commit()
+
+    except Error as e:
+        print(e)
 
 
 def run_many(times) -> None:
