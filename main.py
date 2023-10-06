@@ -2,6 +2,7 @@
 import math
 import sys
 import mysql.connector
+
 from os import name
 from pathlib import Path
 from subprocess import Popen
@@ -52,47 +53,16 @@ def main(POST_ID=None) -> None:
     length, number_of_comments = save_text_to_mp3(reddit_object)
     length = math.ceil(length)
 
-    try:
-        with connect(
-            host="programaleads.com",
-            user="negocioi_wp",
-            password="(rf)K4T7VAy6",
-            database="negocioi_wp"
-        ) as connection:
-            print(connection)   
+    get_screenshots_of_reddit_posts(reddit_object, number_of_comments)
+    bg_config = {
+        "video": get_background_config("video"),
+        "audio": get_background_config("audio"),
+    }
 
-            sql = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
-            cursor = connection.cursor()
-            cursor.execute(sql)
-            objfila = cursor.fetchone()
-
-            print(objfila)
-
-            sql = "UPDATE wp_file SET executado = 1 WHERE id = "+objfila[0]
-            cursor.execute(sql)
-            connection.commit()
-
-            get_screenshots_of_reddit_posts(reddit_object, number_of_comments)
-            bg_config = {
-                "video": objfila[2],
-                "audio": objfila[3],
-            }
-            # bg_config = {
-            #    "video": get_background_config("video"),
-            #    "audio": get_background_config("audio"),
-            #}
-            download_background_video(bg_config["video"])
-            download_background_audio(bg_config["audio"])
-            chop_background(bg_config, length, reddit_object)
-            make_final_video(number_of_comments, length, reddit_object, bg_config)
-
-            sql = "UPDATE wp_file SET executado = 2 WHERE id = "+objfila[0]
-            cursor.execute(sql)
-            connection.commit()
-
-    except Error as e:
-        print(e)
-
+    download_background_video(bg_config["video"])
+    download_background_audio(bg_config["audio"])
+    chop_background(bg_config, length, reddit_object)
+    make_final_video(number_of_comments, length, reddit_object, bg_config)
 
 def run_many(times) -> None:
     for x in range(1, times + 1):
@@ -125,6 +95,28 @@ if __name__ == "__main__":
     )
     config is False and sys.exit()
 
+    cnx = mysql.connector.connect(host="programaleads.com", user="negocioi_wp", password="(rf)K4T7VAy6", database="negocioi_wp")  
+        
+    query = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
+    cursor = cnx.cursor()
+    cursor.execute(query)
+    objfila = cursor.fetchone()
+
+    print(objfila)
+
+    #objfila = []
+    #objfila.append('1');
+    #objfila.append('2');
+    #objfila.append('rocket-league')
+    #objfila.append('lofi')
+    #objfila.append('Bella')
+    #objfila.append('0ac7df1446c8867c18add29505b4afa1')
+
+    config["settings"]["background"]["background_video"] = objfila[2]
+    config["settings"]["background"]["background_audio"] = objfila[3]
+    config["settings"]["tts"]["elevenlabs_voice_name"] = objfila[4]
+    config["settings"]["tts"]["elevenlabs_api_key"] = objfila[5]
+
     if (
         not settings.config["settings"]["tts"]["tiktok_sessionid"]
         or settings.config["settings"]["tts"]["tiktok_sessionid"] == ""
@@ -134,6 +126,11 @@ if __name__ == "__main__":
             "bold red",
         )
         sys.exit()
+    
+    query = "UPDATE wp_file SET executado = 1 WHERE id = "+objfila[0]
+    cursor.execute(query)
+    cnx.commit()
+
     try:
         if config["reddit"]["thread"]["post_id"]:
             for index, post_id in enumerate(config["reddit"]["thread"]["post_id"].split("+")):
@@ -143,6 +140,9 @@ if __name__ == "__main__":
                 )
                 main(post_id)
                 Popen("cls" if name == "nt" else "clear", shell=True).wait()
+                query = "UPDATE wp_file SET executado = 2 WHERE id = "+objfila[0]
+                cursor.execute(query)
+                cnx.commit()
         elif config["settings"]["times_to_run"]:
             run_many(config["settings"]["times_to_run"])
         else:
