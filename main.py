@@ -46,7 +46,7 @@ print_markdown(
 )
 checkversion(__VERSION__)
 
-def main(POST_ID=None) -> None:
+def main(POST_ID=None,objfila=None) -> None:
     global redditid, reddit_object
     reddit_object = get_subreddit_threads(POST_ID)
     redditid = id(reddit_object)
@@ -62,7 +62,7 @@ def main(POST_ID=None) -> None:
     download_background_video(bg_config["video"])
     download_background_audio(bg_config["audio"])
     chop_background(bg_config, length, reddit_object)
-    make_final_video(number_of_comments, length, reddit_object, bg_config)
+    make_final_video(number_of_comments, length, reddit_object, bg_config, objfila)
 
 def run_many(times) -> None:
     for x in range(1, times + 1):
@@ -95,14 +95,16 @@ if __name__ == "__main__":
     )
     config is False and sys.exit()
 
-    cnx = mysql.connector.connect(host="programaleads.com", user="negocioi_wp", password="(rf)K4T7VAy6", database="negocioi_wp")  
+    cnx = mysql.connector.connect(host="209.126.104.82", user="negocioi_wp", password="(rf)K4T7VAy6", database="negocioi_wp")  
         
     query = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
     cursor = cnx.cursor()
     cursor.execute(query)
     objfila = cursor.fetchone()
+    if (not objfila):
+        exit("Nenhum video em fila para ser executado. Encerrando")
 
-    print(objfila)
+    
 
     #objfila = []
     #objfila.append('1');
@@ -127,26 +129,24 @@ if __name__ == "__main__":
         )
         sys.exit()
     
-    query = "UPDATE wp_file SET executado = 1 WHERE id = "+objfila[0]
+    query = "UPDATE wp_fila SET executado = 1 WHERE id = "+str(objfila[0])
     cursor.execute(query)
     cnx.commit()
 
     try:
-        if config["reddit"]["thread"]["post_id"]:
-            for index, post_id in enumerate(config["reddit"]["thread"]["post_id"].split("+")):
-                index += 1
-                print_step(
-                    f'on the {index}{("st" if index % 10 == 1 else ("nd" if index % 10 == 2 else ("rd" if index % 10 == 3 else "th")))} post of {len(config["reddit"]["thread"]["post_id"].split("+"))}'
-                )
-                main(post_id)
-                Popen("cls" if name == "nt" else "clear", shell=True).wait()
-                query = "UPDATE wp_file SET executado = 2 WHERE id = "+objfila[0]
-                cursor.execute(query)
-                cnx.commit()
-        elif config["settings"]["times_to_run"]:
-            run_many(config["settings"]["times_to_run"])
-        else:
-            main()
+        # if config["reddit"]["thread"]["post_id"]:
+        #     for index, post_id in enumerate(config["reddit"]["thread"]["post_id"].split("+")):
+        #         index += 1
+        #         print_step(
+        #             f'on the {index}{("st" if index % 10 == 1 else ("nd" if index % 10 == 2 else ("rd" if index % 10 == 3 else "th")))} post of {len(config["reddit"]["thread"]["post_id"].split("+"))}'
+        #         )
+        #         main(post_id)
+        #         Popen("cls" if name == "nt" else "clear", shell=True).wait()
+                
+        # elif config["settings"]["times_to_run"]:
+        #     run_many(config["settings"]["times_to_run"])
+        # else:
+            main(None,objfila)
     except KeyboardInterrupt:
         shutdown()
     except ResponseException:

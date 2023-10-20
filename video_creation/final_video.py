@@ -20,7 +20,8 @@ from utils import settings
 import tempfile
 import threading
 import time
-
+import mysql.connector
+import shutil
 console = Console()
 
 
@@ -132,6 +133,7 @@ def make_final_video(
     length: int,
     reddit_obj: dict,
     background_config: Dict[str, Tuple],
+    objfila=None
 ):
     """Gathers audio clips, gathers all screenshots, stitches them together and saves the final video to assets/temp
     Args:
@@ -398,6 +400,17 @@ def make_final_video(
         pbar.update(100 - old_percentage)
     pbar.close()
     save_data(subreddit, filename + ".mp4", title, idx, background_config["video"][2])
+    os.mkdir('/var/www/html/'+str(objfila[0]))     
+    # absolute path
+    
+    src_path = r"./results/"+str(subreddit)+"/"+str(filename)+".mp4"
+    dst_path = r"/var/www/html/"+str(objfila[0])
+    shutil.move(src_path, dst_path)
+    cnx = mysql.connector.connect(host="209.126.104.82", user="negocioi_wp", password="(rf)K4T7VAy6", database="negocioi_wp")          
+    query = "UPDATE wp_fila SET executado = 2,url='"+str(filename)+".mp4' WHERE id = "+str(objfila[0])
+    cursor = cnx.cursor()
+    cursor.execute(query)    
+    cnx.commit()
     print_step("Removing temporary files 🗑")
     cleanups = cleanup(reddit_id)
     print_substep(f"Removed {cleanups} temporary files 🗑")
