@@ -97,6 +97,14 @@ if __name__ == "__main__":
 
     cnx = mysql.connector.connect(host="209.126.104.82", user="negocioi_wp", password="(rf)K4T7VAy6", database="negocioi_wp")  
         
+    #Verificamos se tem algum vídeo sendo gerado
+    query = "SELECT count(*) as total FROM wp_fila WHERE executado = 1"
+    cursor = cnx.cursor()
+    cursor.execute(query)
+    objExecutando = cursor.fetchone()
+    if(objExecutando[0]>0):
+        exit("Não vamos executar. Tem vídeo sendo produzido")
+
     query = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
     cursor = cnx.cursor()
     cursor.execute(query)
