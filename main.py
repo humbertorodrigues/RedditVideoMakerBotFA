@@ -131,7 +131,7 @@ if __name__ == "__main__":
     config["settings"]["reddit"]["creds"]["username"] = objfila[8]
     config["settings"]["reddit"]["creds"]["password"] = objfila[9]
     config["settings"]["reddit"]["thread"]["subreddit"] = objfila[10]
-    config["settings"]["reddit"]["thread"]["min_comment_length"] = objfila[11]
+    config["settings"]["reddit"]["thread"]["min_comments"] = objfila[11]
 
     if (
         not settings.config["settings"]["tts"]["tiktok_sessionid"]
