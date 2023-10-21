@@ -27,6 +27,7 @@ from video_creation.screenshot_downloader import get_screenshots_of_reddit_posts
 from video_creation.voices import save_text_to_mp3
 from utils.ffmpeg_install import ffmpeg_install
 from mysql.connector import connect, Error
+from pyutil import filereplace
 
 __VERSION__ = "3.2.1"
 
@@ -109,6 +110,7 @@ if __name__ == "__main__":
     cursor = cnx.cursor()
     cursor.execute(query)
     objfila = cursor.fetchone()
+    
     if (not objfila):
         exit("Nenhum video em fila para ser executado. Encerrando")
 
@@ -122,17 +124,25 @@ if __name__ == "__main__":
     #objfila.append('Bella')
     #objfila.append('0ac7df1446c8867c18add29505b4afa1')
 
-    config["settings"]["background"]["background_video"] = objfila[2]
-    config["settings"]["background"]["background_audio"] = objfila[3]
-    config["settings"]["tts"]["elevenlabs_voice_name"] = objfila[4]
-    config["settings"]["tts"]["elevenlabs_api_key"] = objfila[5]
-    config["settings"]["reddit"]["creds"]["client_id"] = objfila[6]
-    config["settings"]["reddit"]["creds"]["client_secret"] = objfila[7]
-    config["settings"]["reddit"]["creds"]["username"] = objfila[8]
-    config["settings"]["reddit"]["creds"]["password"] = objfila[9]
-    config["settings"]["reddit"]["thread"]["subreddit"] = objfila[10]
-    config["settings"]["reddit"]["thread"]["min_comments"] = objfila[11]
+    settings.config["settings"]["background"]["background_video"] = objfila[2]
+    settings.config["settings"]["background"]["background_audio"] = objfila[3]
+    settings.config["settings"]["tts"]["elevenlabs_voice_name"] = objfila[4]
+    settings.config["settings"]["tts"]["elevenlabs_api_key"] = objfila[5]
+    settings.config["reddit"]["creds"]["client_id"] = objfila[6]
+    settings.config["reddit"]["creds"]["client_secret"] = objfila[7]
+    settings.config["reddit"]["creds"]["username"] = objfila[8]
+    settings.config["reddit"]["creds"]["password"] = objfila[9]
+    settings.config["reddit"]["thread"]["subreddit"] = objfila[10]
+    settings.config["reddit"]["thread"]["min_comments"] = objfila[11]
 
+    # filereplace("config.toml",'client_id = "(.*)"','client_id = "'+str(objfila[6])+'"')
+    # filereplace("config.toml",'client_secret = "(.*)"','client_secret = "'+str(objfila[7])+'"')
+    # filereplace("config.toml",'username = "(.*)"','username = "'+str(objfila[8])+'"')
+    # filereplace("config.toml",'password = "(.*)"','password = "'+str(objfila[9])+'"')
+    # filereplace("config.toml",'subreddit = "(.*)"','subreddit = "'+str(objfila[10])+'"')
+    # filereplace("config.toml",'min_comments = "(.*)"','min_comments = "'+str(objfila[11])+'"')
+
+    
     if (
         not settings.config["settings"]["tts"]["tiktok_sessionid"]
         or settings.config["settings"]["tts"]["tiktok_sessionid"] == ""
