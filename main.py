@@ -126,6 +126,12 @@ if __name__ == "__main__":
     config["settings"]["background"]["background_audio"] = objfila[3]
     config["settings"]["tts"]["elevenlabs_voice_name"] = objfila[4]
     config["settings"]["tts"]["elevenlabs_api_key"] = objfila[5]
+    config["settings"]["reddit"]["creds"]["client_id"] = objfila[6]
+    config["settings"]["reddit"]["creds"]["client_secret"] = objfila[7]
+    config["settings"]["reddit"]["creds"]["username"] = objfila[8]
+    config["settings"]["reddit"]["creds"]["password"] = objfila[9]
+    config["settings"]["reddit"]["thread"]["subreddit"] = objfila[10]
+    config["settings"]["reddit"]["thread"]["min_comment_length"] = objfila[11]
 
     if (
         not settings.config["settings"]["tts"]["tiktok_sessionid"]
