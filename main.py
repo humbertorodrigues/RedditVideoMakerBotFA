@@ -174,10 +174,16 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         shutdown()
     except ResponseException:
+        query = "UPDATE wp_fila SET executado = 4 WHERE id = "+str(objfila[0])
+        cursor.execute(query)
+        cnx.commit()    
         print_markdown("## Invalid credentials")
         print_markdown("Please check your credentials in the config.toml file")
         shutdown()
     except Exception as err:
+        query = "UPDATE wp_fila SET executado = 5 WHERE id = "+str(objfila[0])
+        cursor.execute(query)
+        cnx.commit()    
         config["settings"]["tts"]["tiktok_sessionid"] = "REDACTED"
         config["settings"]["tts"]["elevenlabs_api_key"] = "REDACTED"
         print_step(
