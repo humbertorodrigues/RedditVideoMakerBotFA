@@ -4,7 +4,7 @@ from utils.console import print_step
 
 
 def checkversion(__VERSION__: str):
-    return true
+    return True
     response = requests.get(
         "https://api.github.com/repos/elebumm/RedditVideoMakerBot/releases/latest"
     )
