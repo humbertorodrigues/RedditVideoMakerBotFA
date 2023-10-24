@@ -103,8 +103,8 @@ if __name__ == "__main__":
     cursor = cnx.cursor()
     cursor.execute(query)
     objExecutando = cursor.fetchone()
-    if(objExecutando[0]>0):
-        exit("Não vamos executar. Tem vídeo sendo produzido")
+    if(objExecutando[0]>9):
+        exit("Não vamos executar. Tem vídeo 10 vídeos sendo produzidos")
 
     query = "SELECT * FROM wp_fila WHERE executado = 0 ORDER BY data_execucao LIMIT 0,1"
     cursor = cnx.cursor()
