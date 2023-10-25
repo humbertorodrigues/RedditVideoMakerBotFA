@@ -184,7 +184,12 @@ if __name__ == "__main__":
         print_markdown("Please check your credentials in the config.toml file")
         shutdown()
     except Exception as err:
-        query = "UPDATE wp_fila SET executado = 5,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
+        if err=="list index out of range":
+
+            query = "UPDATE wp_fila SET executado = 6,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
+        else:
+            query = "UPDATE wp_fila SET executado = 5,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
+
         cursor.execute(query)
         cnx.commit()    
         config["settings"]["tts"]["tiktok_sessionid"] = "REDACTED"
