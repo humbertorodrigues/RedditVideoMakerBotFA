@@ -184,8 +184,11 @@ if __name__ == "__main__":
         print_markdown("Please check your credentials in the config.toml file")
         shutdown()
     except Exception as err:
-        if (err=="list index out of range"):
+        if ("list index out of range" in str(err)):
             query = "UPDATE wp_fila SET executado = 6,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
+        elif ("Unusual activity detected" in str(err)):
+            # Vamos tentar novamente
+            query = "UPDATE wp_fila SET executado = 0,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
         else:
             query = "UPDATE wp_fila SET executado = 5,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
 
@@ -193,6 +196,7 @@ if __name__ == "__main__":
         cnx.commit()    
         config["settings"]["tts"]["tiktok_sessionid"] = "REDACTED"
         config["settings"]["tts"]["elevenlabs_api_key"] = "REDACTED"
+        exit(err)
         print_step(
             f"Sorry, something went wrong with this version! Try again, and feel free to report this issue at GitHub or the Discord community.\n"
             f"Version: {__VERSION__} \n"
