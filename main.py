@@ -134,6 +134,9 @@ if __name__ == "__main__":
     settings.config["reddit"]["creds"]["password"] = objfila[9]
     settings.config["reddit"]["thread"]["subreddit"] = objfila[10]
     settings.config["reddit"]["thread"]["min_comments"] = objfila[11]
+    settings.config["reddit"]["thread"]["post_lang"] = objfila[12]
+    if not objfila[12]:
+        settings.config["reddit"]["thread"]["post_lang"]  ="pt"
 
     # filereplace("config.toml",'client_id = "(.*)"','client_id = "'+str(objfila[6])+'"')
     # filereplace("config.toml",'client_secret = "(.*)"','client_secret = "'+str(objfila[7])+'"')
