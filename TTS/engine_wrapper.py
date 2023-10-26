@@ -149,7 +149,7 @@ class TTSEngine:
         self.tts_module.run(
             text,
             filepath=f"{self.path}/{filename}.mp3",
-            random_voice=settings.config["settings"]["tts"]["random_voice"],
+            # random_voice=settings.config["settings"]["tts"]["random_voice"],
         )
         # try:
         #     self.length += MP3(f"{self.path}/{filename}.mp3").info.length
@@ -179,6 +179,6 @@ def process_text(text: str, clean: bool = True):
     new_text = sanitize_text(text) if clean else text
     if lang:
         print_substep("Translating Text...")
-        translated_text = translators.translate_text(text, translator="google", to_language=lang)
+        translated_text = translators.translate_text(text, translator="bing", to_language=lang)
         new_text = sanitize_text(translated_text)
     return new_text
