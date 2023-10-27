@@ -191,6 +191,9 @@ if __name__ == "__main__":
         elif ("Unsupported to_language" in str(err)):
             # Vamos tentar novamente
             query = "UPDATE wp_fila SET executado = 0,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
+        elif ("Your reddit credentials are incorrect" in str(err)):
+            
+            query = "UPDATE wp_fila SET executado = 4,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
         else:
             query = "UPDATE wp_fila SET executado = 5,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
 
