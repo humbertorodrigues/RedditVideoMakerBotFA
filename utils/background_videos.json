@@ -59,5 +59,29 @@
         "steep.mp4",
         "joel",
         "center"
+    ],
+    "nature1": [
+        "https://www.youtube.com/watch?v=F0lowv3DyfI",
+        "nature1.mp4",
+        "humba",
+        "center"
+    ],
+    "nature2": [
+        "https://www.youtube.com/watch?v=iyBo_q3TgYc",
+        "nature2.mp4",
+        "humba",
+        "center"
+    ],
+    "nature3": [
+        "https://www.youtube.com/watch?v=wZ-R1JDwkLs",
+        "nature3.mp4",
+        "humba",
+        "center"
+    ],
+    "nature4": [
+        "https://www.youtube.com/watch?v=jrwKgIowiAI",
+        "nature4.mp4",
+        "humba",
+        "center"
     ]
 }
