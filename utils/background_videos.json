@@ -83,5 +83,42 @@
         "nature4.mp4",
         "humba",
         "center"
+
+    ],
+    "mario1": [
+        "https://www.youtube.com/watch?v=3Tc_Ek0ASSA",
+        "mario1.mp4",
+        "humba",
+        "center"
+    ],
+    "mario2": [
+        "https://www.youtube.com/watch?v=3_tWdqzU4jM",
+        "mario2.mp4",
+        "humba",
+        "center"
+    ],
+    "luigi": [
+        "https://www.youtube.com/watch?v=7qXeejLPc0c",
+        "luigi.mp4",
+        "humba",
+        "center"
+    ],
+    "sonic1": [
+        "https://www.youtube.com/watch?v=Wc4m7yCrfKo",
+        "sonic1.mp4",
+        "humba",
+        "center"
+    ],
+    "sonic2": [
+        "https://www.youtube.com/watch?v=lrdjLR1HR9s",
+        "sonic2.mp4",
+        "humba",
+        "center"
+    ],
+    "sonic3": [
+        "https://www.youtube.com/watch?v=KLDHgGb1i14",
+        "sonic3.mp4",
+        "humba",
+        "center"
     ]
 }
