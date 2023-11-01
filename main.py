@@ -187,7 +187,7 @@ if __name__ == "__main__":
         if ("list index out of range" in str(err)):
             query = "UPDATE wp_fila SET executado = 6,erro='"+str(err)+"' WHERE id = "+str(objfila[0])
         elif ("Unusual activity detected" in str(err)):
-            query = "UPDATE wp_fila SET executado = 0,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
+            query = "UPDATE wp_fila SET executado = 7,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
         elif ("Unsupported to_language" in str(err)):
             # Vamos tentar novamente
             query = "UPDATE wp_fila SET executado = 0,erro='"+str(err)+"' WHERE id = "+str(objfila[0])        
