@@ -132,9 +132,7 @@ if __name__ == "__main__":
     settings.config["reddit"]["creds"]["client_secret"] = objfila[7]
     settings.config["reddit"]["creds"]["username"] = objfila[8]
     settings.config["reddit"]["creds"]["password"] = objfila[9]
-    settings.config["reddit"]["thread"]["subreddit"] = objfila[10]
     settings.config["reddit"]["thread"]["min_comments"] = objfila[11]
-    settings.config["reddit"]["thread"]["post_lang"] = objfila[12]
     if (not objfila[13] or objfila[13] == "vertical"):
         settings.config["settings"]["resolution_w"] = 1080
         settings.config["settings"]["resolution_h"] = 1920
