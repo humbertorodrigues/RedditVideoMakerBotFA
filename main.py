@@ -135,6 +135,17 @@ if __name__ == "__main__":
     settings.config["reddit"]["thread"]["subreddit"] = objfila[10]
     settings.config["reddit"]["thread"]["min_comments"] = objfila[11]
     settings.config["reddit"]["thread"]["post_lang"] = objfila[12]
+    if (not objfila[13] or objfila[13] == "vertical"):
+        settings.config["settings"]["resolution_w"] = 1080
+        settings.config["settings"]["resolution_h"] = 1920
+    elif (objfila[13] == "vertical"):
+        settings.config["settings"]["resolution_w"] = 1920
+        settings.config["settings"]["resolution_h"] = 1080
+    if not objfila[14]:
+        settings.config["reddit"]["thread"]["subreddit"] = objfila[10]
+        settings.config["reddit"]["thread"]["post_lang"] = objfila[12]
+    else:
+        settings.config["reddit"]["thread"]["post_id"] = objfila[14]
     if not objfila[12]:
         settings.config["reddit"]["thread"]["post_lang"]  ="pt"
 
